@@ -24,6 +24,10 @@ export default function App() {
         setHelpMsg("Congratulations! You guessed the correct number.");
         setGuessCount(0);
         setIsGuessed(true);
+        setTimeout(() => {
+          setHelpMsg('')
+          resetCount();
+        }, 5000);
       }
       setGuessCount(guessCount + 1);
     }
