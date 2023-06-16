@@ -15,9 +15,9 @@ const styles=StyleSheet.create(
       backgroundColor:'green',
       width:'100%',
       alignItems:'center',
-      height:'9%',
+      height:75,
       justifyContent:'flex-end',
-      paddingBottom:10,
+      paddingVertical:10,
       marginBottom:10
     },
     title:{
