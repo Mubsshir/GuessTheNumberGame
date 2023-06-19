@@ -1,38 +1,61 @@
 import React, { useRef, useState } from "react";
-import { Button } from "react-native";
+import { Alert, Button } from "react-native";
 import { TextInput, Text, View, StyleSheet } from "react-native";
 import Card from "../components/UI/Card";
 const StartScreen = (props) => {
-  const [number,setNumber]=useState();
-  const guessRef=useRef();
-  const onChangeHandler=(number)=>{
-    if(!isNaN(number)){
-      guessRef.current=number;
+  const [guessNumber, setGuessNumber] = useState();
+  const onChangeHandler = (number) => {
+    if (!isNaN(number) && number.length < 3) {
+      setGuessNumber(number);
     }
-  }
+  };
 
-  const onConfirmHandler=()=>{
-    if(guessRef.current!=''){
-      props.onConfirm(guessRef.current);
+  const onConfirmHandler = () => {
+    if (!(guessNumber <= 20 && guessNumber >= 0)) {
+      Alert.alert("Wrong Input", "Input should be b/w 0 and 20", [
+        {
+          text: "Ok",
+          style: "destructive",
+          onPress: () => {
+            setGuessNumber("");
+          },
+        },
+      ]);
+      return;
     }
-    return
-  }
-  const onResetHandler=()=>{
+    if (!guessNumber) {
+      Alert.alert("No Input found", "Please guess the number", [
+        {
+          text: "Ok",
+          style: "destructive",
+          onPress: () => {
+            setGuessNumber("");
+          },
+        },
+      ]);
+      return;
+    }
+    props.onConfirm(guessNumber);
+    return;
+  };
+  const onResetHandler = () => {
+    setGuessNumber("");
     props.onReset();
-  }
+  };
   return (
     <Card style={styles.inputArea}>
       <Text style={styles.cardText}>What am I thinking</Text>
-      <View style={styles.interactiveArea}> 
-        <TextInput style={styles.input}
-          numeric
-          keyboardType="numeric"
+      <View style={styles.interactiveArea}>
+        <TextInput
+          style={styles.input}
+          inputMode="numeric"
           placeholder="Guess a number b/w 0 and 20"
           onChangeText={onChangeHandler}
+          value={guessNumber}
         />
         <View style={styles.btn}>
-          <Button title="Reset" color={"red"} onPress={onResetHandler}/>
-          <Button title="Confirm" color={"green"}  onPress={onConfirmHandler}/>
+          <Button title="Reset" color={"red"} onPress={onResetHandler} />
+          <Button title="Confirm" color={"green"} onPress={onConfirmHandler} />
         </View>
       </View>
     </Card>
@@ -44,33 +67,33 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
-  cardText:{
-    textAlign:'center',
-    fontWeight:500,
-    fontSize:18,
-    color:'green'
+  cardText: {
+    textAlign: "center",
+    fontWeight: 500,
+    fontSize: 18,
+    color: "green",
   },
-  interactiveArea:{
-    marginVertical:10,
-    width:'100%',
-    alignItems:'center'
+  interactiveArea: {
+    marginVertical: 10,
+    width: "100%",
+    alignItems: "center",
   },
-  input:{
-    fontSize:14,
-    fontWeight:'600',
-    width:'70%',
-    textAlign:'center',
-    marginBottom:15,
-    borderColor:'#aca4a47d',
-    padding:5,
-    borderWidth:1,
-    borderRadius:5,
-    textAlign:'center'
+  input: {
+    fontSize: 14,
+    fontWeight: "600",
+    width: "70%",
+    textAlign: "center",
+    marginBottom: 15,
+    borderColor: "#aca4a47d",
+    padding: 5,
+    borderWidth: 1,
+    borderRadius: 5,
+    textAlign: "center",
   },
-  btn:{
-    flexDirection:'row',
-    width:'70%',
-    justifyContent:'space-around'
-  }
+  btn: {
+    flexDirection: "row",
+    width: "70%",
+    justifyContent: "space-around",
+  },
 });
 export default StartScreen;

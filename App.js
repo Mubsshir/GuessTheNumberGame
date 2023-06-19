@@ -8,12 +8,12 @@ import GameOver from "./Screens/GameOver";
 let thinkNumber = Math.floor(Math.random() * 20);
 let guessLimit = 5;
 export default function App() {
-  console.log(thinkNumber);
   const [guessCount, setGuessCount] = useState(0);
   const [helpMsg, setHelpMsg] = useState("");
-  const [isGuessed,setIsGuessed]=useState(false)
+  const [isGuessed, setIsGuessed] = useState(false);
   const addCountHandler = (number) => {
-    if(!isGuessed){
+    if (!isGuessed) {
+      console.log(thinkNumber);
       if (number < thinkNumber / 2 || number > thinkNumber * 2) {
         setHelpMsg("You are too far away");
       } else if (number > thinkNumber) {
@@ -25,7 +25,7 @@ export default function App() {
         setGuessCount(0);
         setIsGuessed(true);
         setTimeout(() => {
-          setHelpMsg('')
+          setHelpMsg("");
           resetCount();
         }, 5000);
       }
@@ -34,19 +34,23 @@ export default function App() {
   };
   const resetCount = () => {
     setGuessCount(0);
-    thinkNumber = Math.floor(Math.random() * 100);
-    setHelpMsg('');
+    thinkNumber = Math.floor(Math.random() * 20);
+    setHelpMsg("");
     setIsGuessed(false);
   };
   return (
     <ScrollView>
       <KeyboardAvoidingView enabled={false} style={styles.container}>
         <Header />
-        {(guessCount <= guessLimit || isGuessed)&&<>
-          <StartScreen onConfirm={addCountHandler} onReset={resetCount} />
-          <GuessCard msg={helpMsg} guess={guessCount} />
-        </>}
-        {(guessCount >= guessLimit && !isGuessed) && <GameOver resetGame={resetCount} />}
+        {(guessCount <= guessLimit || isGuessed) && (
+          <>
+            <StartScreen onConfirm={addCountHandler} onReset={resetCount} />
+            <GuessCard msg={helpMsg} guess={guessCount} />
+          </>
+        )}
+        {guessCount > guessLimit && !isGuessed && (
+          <GameOver resetGame={resetCount} />
+        )}
       </KeyboardAvoidingView>
     </ScrollView>
   );
