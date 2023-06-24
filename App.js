@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, ScrollView, KeyboardAvoidingView } from "react-native";
 import Header from "./components/UI/Header";
 import StartScreen from "./Screens/StartScreen";
