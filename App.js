@@ -1,16 +1,44 @@
-import { StyleSheet, ScrollView, KeyboardAvoidingView } from "react-native";
-import Header from "./components/UI/Header";
+import {
+  StyleSheet,
+  ScrollView,
+  KeyboardAvoidingView
+} from "react-native";
+import Header from "./components/Header";
 import StartScreen from "./Screens/StartScreen";
-import GuessCard from "./components/UI/GuessCard";
-import { useState } from "react";
+import GuessCard from "./components/GuessCard";
+import { useCallback, useEffect, useState } from "react";
 import GameOver from "./Screens/GameOver";
+import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+
+//will not change when component re-render
 let thinkNumber = Math.floor(Math.random() * 20);
 let guessLimit = 5;
+SplashScreen.preventAutoHideAsync();
 export default function App() {
-  //for dev
   const [guessCount, setGuessCount] = useState(0);
   const [helpMsg, setHelpMsg] = useState("");
   const [isGuessed, setIsGuessed] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchFonts = async () => {
+    try {
+      console.log("Loading fonts......")
+      await Font.loadAsync({
+        "poppins-regular": require("./assets/fonts/Poppins-Regular.ttf"),
+        "poppins-bold": require("./assets/fonts/Poppins-Bold.ttf"),
+      });
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFonts();
+  }, []);
+
   const addCountHandler = (number) => {
     if (!isGuessed) {
       console.log(thinkNumber);
@@ -32,15 +60,32 @@ export default function App() {
       setGuessCount(guessCount + 1);
     }
   };
+
+  const onLayoutRootView = useCallback(async () => {
+    if (!isLoading) {
+      await SplashScreen.hideAsync();
+      console.log("Font loaded");
+    }
+  }, [isLoading]);
+
+
   const resetCount = () => {
     setGuessCount(0);
     thinkNumber = Math.floor(Math.random() * 20);
     setHelpMsg("");
     setIsGuessed(false);
   };
+
+  if (isLoading) {
+    return null;
+  }
   return (
     <ScrollView>
-      <KeyboardAvoidingView enabled={false} style={styles.container}>
+      <KeyboardAvoidingView
+        enabled={false}
+        style={styles.container}
+        onLayout={onLayoutRootView}
+      >
         <Header />
         {(guessCount <= guessLimit || isGuessed) && (
           <>
@@ -62,5 +107,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "flex-start",
-  },
+  }
 });

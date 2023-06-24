@@ -5,8 +5,8 @@ let imgUrl='https://t4.ftcdn.net/jpg/02/11/54/33/360_F_211543376_kv7x0SwdITkWbqa
 const GameOver = (props) => {
   return (
     <Card style={styles.imgBox}>
-      <Image style={{width:'100%' ,height:200,marginBottom:20}}
-        src={imgUrl}
+      <Image style={{width:'100%' ,height:100,marginBottom:20 ,borderRadius:20}}
+        src={imgUrl} resizeMode="cover"
       />
       <Text style={styles.msg}>You Exceed the guess Limit</Text>
       <Button title="Replay" color={'green'} onPress={props.resetGame}/>

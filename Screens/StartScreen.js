@@ -2,6 +2,10 @@ import React, { useRef, useState } from "react";
 import { Alert, Button } from "react-native";
 import { TextInput, Text, View, StyleSheet } from "react-native";
 import Card from "../components/UI/Card";
+import BoldText from "../components/UI/BoldText";
+import MainButton from "../components/UI/MainButton";
+import { MaterialIcons as MI } from "@expo/vector-icons";
+
 const StartScreen = (props) => {
   const [guessNumber, setGuessNumber] = useState();
   const onChangeHandler = (number) => {
@@ -42,9 +46,10 @@ const StartScreen = (props) => {
     setGuessNumber("");
     props.onReset();
   };
+
   return (
     <Card style={styles.inputArea}>
-      <Text style={styles.cardText}>What am I thinking</Text>
+      <BoldText style={styles.cardText}>What am I thinking</BoldText>
       <View style={styles.interactiveArea}>
         <TextInput
           style={styles.input}
@@ -54,8 +59,20 @@ const StartScreen = (props) => {
           value={guessNumber}
         />
         <View style={styles.btn}>
-          <Button title="Reset" color={"red"} onPress={onResetHandler} />
-          <Button title="Confirm" color={"green"} onPress={onConfirmHandler} />
+          <MainButton
+            title="Reset"
+            color="red"
+            text="white"
+            onPress={onResetHandler}
+            icon={<MI name="replay" size={18} color={"white"} />}
+          />
+          <MainButton
+            title="Confirm"
+            color="green"
+            text="white"
+            onPress={onConfirmHandler}
+            icon={<MI name="check" size={18} color={"white"} />}
+          />
         </View>
       </View>
     </Card>
@@ -68,9 +85,6 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   cardText: {
-    textAlign: "center",
-    fontWeight: 500,
-    fontSize: 18,
     color: "green",
   },
   interactiveArea: {
