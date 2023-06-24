@@ -7,6 +7,7 @@ import GameOver from "./Screens/GameOver";
 let thinkNumber = Math.floor(Math.random() * 20);
 let guessLimit = 5;
 export default function App() {
+  //for dev
   const [guessCount, setGuessCount] = useState(0);
   const [helpMsg, setHelpMsg] = useState("");
   const [isGuessed, setIsGuessed] = useState(false);
